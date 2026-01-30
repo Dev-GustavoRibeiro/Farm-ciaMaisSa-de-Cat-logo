@@ -1,0 +1,303 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9fa;
+  --foreground: #0f172a;
+  --primary: #002366; /* Dark Blue */
+  --primary-foreground: #ffffff;
+  --accent: #dc2626; /* Red */
+  --accent-foreground: #ffffff;
+  --border: #e2e8f0;
+  --radius: 1rem; /* 16px - Rounded/Friendly */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --radius-xl: var(--radius);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617;
+    --foreground: #f8fafc;
+    --border: #1e293b;
+    --primary: #1e3a8a;
+  }
+}
+
+/* Performance: Otimizações gerais */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+  overflow-x: hidden;
+}
+
+/* Performance: Lazy loading de imagens */
+img {
+  content-visibility: auto;
+}
+
+/* Utilities for mobile optimization */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Modern Scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* GPU-accelerated animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(-20px) translateZ(0); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(30deg) translateZ(0); }
+  50% { transform: translateY(-25px) rotate(40deg) translateZ(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { transform: scale(1) translateZ(0); opacity: 1; }
+  50% { transform: scale(1.1) translateZ(0); opacity: 0.8; }
+}
+
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0) translateZ(0); }
+  50% { transform: translateY(8px) translateZ(0); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+  will-change: transform;
+  contain: layout style;
+}
+
+.animate-float-delayed {
+  animation: float 5s ease-in-out infinite 0.5s;
+  will-change: transform;
+  contain: layout style;
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+  will-change: transform;
+  contain: layout style;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 12s ease-in-out infinite;
+  will-change: transform, opacity;
+  contain: layout style;
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 1.5s ease-in-out infinite;
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Force GPU acceleration for heavy elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+/* Fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0%) translateZ(0); }
+  100% { transform: translateX(-100%) translateZ(0); }
+}
+
+@keyframes marquee2 {
+  0% { transform: translateX(100%) translateZ(0); }
+  100% { transform: translateX(0%) translateZ(0); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+  contain: layout style;
+}
+
+.animate-marquee2 {
+  animation: marquee2 30s linear infinite;
+  will-change: transform;
+  contain: layout style;
+}
+
+/* Performance: Reduzir animações para usuários que preferem */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .animate-float,
+  .animate-float-delayed,
+  .animate-float-slow,
+  .animate-pulse-glow,
+  .animate-bounce-soft,
+  .animate-marquee,
+  .animate-marquee2 {
+    animation: none !important;
+  }
+}
+
+/* Performance: Otimizações específicas para mobile */
+@media (max-width: 768px) {
+  /* Reduz blur em mobile para melhorar performance */
+  .blur-\[80px\] {
+    filter: blur(40px) !important;
+  }
+  .blur-\[60px\] {
+    filter: blur(30px) !important;
+  }
+  .blur-\[120px\] {
+    filter: blur(60px) !important;
+  }
+  .blur-\[100px\] {
+    filter: blur(50px) !important;
+  }
+  .blur-3xl {
+    filter: blur(32px) !important;
+  }
+  .blur-2xl {
+    filter: blur(24px) !important;
+  }
+  
+  /* Simplifica sombras em mobile */
+  .shadow-2xl {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  /* Reduz backdrop-blur em mobile */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(12px) !important;
+  }
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px) !important;
+  }
+}
+
+/* Performance: Container queries para lazy rendering */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Hero gradient orbs - evita hydration mismatch */
+.hero-orb-red {
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.3) 0%, transparent 70%);
+}
+
+.hero-orb-blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  animation-delay: 2s;
+}
+
+.hero-grid-pattern {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px), 
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.hero-logo-shadow {
+  filter: drop-shadow(0 0 60px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 100px rgba(0, 0, 0, 0.5));
+}
+
+.hero-text-shadow {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Invisible scrollbar utility */
+.scrollbar-invisible {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-invisible::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide Spline watermark */
+spline-viewer::part(logo) {
+  display: none !important;
+}
+
+spline-viewer {
+  --spline-watermark-display: none;
+}
+
+/* Fallback: hide any Spline branding via general selectors */
+spline-viewer a[href*="spline"],
+spline-viewer div[class*="logo"],
+spline-viewer img[alt*="Spline"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
